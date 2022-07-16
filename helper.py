@@ -166,17 +166,17 @@ def preprocess1(q):
     
     return q
   
-  def countCommonWords(q1,q2):
+def countCommonWords(q1,q2):
     w1 = set(map(lambda word: word.lower().strip(), q1.split(" ")))
     w2 = set(map(lambda word: word.lower().strip(), q2.split(" ")))    
     return len(w1 & w2)
   
-  def totalNumberOfWords(q1,q2):
+def totalNumberOfWords(q1,q2):
     w1 = set(map(lambda word: word.lower().strip(), q1.split(" ")))
     w2 = set(map(lambda word: word.lower().strip(), q2.split(" ")))    
     return (len(w1) + len(w2))
   
-  def findFuzzyFeatures(q1,q2):
+def findFuzzyFeatures(q1,q2):
     fuzzyFeatures = [0.0]*4
     fuzzyFeatures[0] = fuzz.QRatio(q1, q2)
     fuzzyFeatures[1] = fuzz.partial_ratio(q1, q2)
@@ -184,32 +184,32 @@ def preprocess1(q):
     fuzzyFeatures[3] = fuzz.token_set_ratio(q1, q2)
     return fuzzyFeatures
   
-  def findW2vector(q):
-  nlp = spacy.load('en_core_web_lg')
-  pickle_off = open("word2tfidf.pkl","rb")
-  word2tfidf = pickle.load(pickle_off)
-  #print(emp)
-  vecs1 = []
-  #for qu1 in tqdm(list(df['question1'])):
-  doc1 = nlp(q) 
+def findW2vector(q):
+    nlp = spacy.load('en_core_web_lg')
+    pickle_off = open("word2tfidf.pkl","rb")
+    word2tfidf = pickle.load(pickle_off)
+    #print(emp)
+    vecs1 = []
+    #for qu1 in tqdm(list(df['question1'])):
+    doc1 = nlp(q) 
       # 384 is the number of dimensions of vectors 
-  mean_vec1 = np.zeros([len(doc1), 300])
-  for word1 in doc1:
+    mean_vec1 = np.zeros([len(doc1), 300])
+    for word1 in doc1:
           # word2vec
-      vec1 = word1.vector
+        vec1 = word1.vector
           # fetch df score
-      try:
-          idf = word2tfidf[str(word1)]
-      except:
-          idf = 0
+        try:
+            idf = word2tfidf[str(word1)]
+        except:
+            idf = 0
           # compute final vec
       #print(idf)    
-      mean_vec1 += vec1 * idf
-  mean_vec1 = mean_vec1.mean(axis=0)
-  vecs1.append(mean_vec1)
-  #print(mean_vec1)
-  #return list(vecs1)
-  return list(mean_vec1)
+        mean_vec1 += vec1 * idf
+    mean_vec1 = mean_vec1.mean(axis=0)
+    vecs1.append(mean_vec1)
+    #print(mean_vec1)
+    #return list(vecs1)
+    return list(mean_vec1)
 
 
 def computeQueryPoint(q1,q2):
