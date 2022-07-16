@@ -1,0 +1,6 @@
+streamlit
+kaggle
+sklearn
+fuzzywuzzy
+distance
+bs4
