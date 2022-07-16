@@ -11,7 +11,7 @@ q1 = st.text_input('Enter 1st question')
 q2 = st.text_input('Enter 2nd question')
 
 if st.button('Predict Similarity'):
-    query = helper.query_point_creator(q1,q2)
+    query = helper.computeQueryPoint(q1,q2).reshape(1,-1)
     result = model.predict(query)[0]
 
     if result:
